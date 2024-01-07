@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/admin/bill.css">
+    <title>Formulario y Tabla</title>
+</head>
+
+<body>
+
+    <form id="formulario">
+        <div class="client_data">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="identificacion">CI/RUC:</label>
+            <input type="text" id="identificacion" name="identificacion" required>
+            <button type="button" onclick="imprimir()">Imprimir</button>
+            <button type="button" onclick="salir()">Salir</button><br><br>
+        </div>
+        <div class="product_data">
+            <label for="producto">Descripción:</label>
+            <input type="text" id="producto" name="producto" list="productosList" required>
+            <datalist id="productosList">
+                <option value="Porción pizza"></option>
+                <option value="Lasagna"></option>
+                <option value="Hamburguesa"></option>
+            </datalist>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" min="1" required>
+            <button type="button" onclick="agregarProducto()">Agregar</button>
+        </div>
+    </form>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Acciones</th>
+                <!-- Nueva columna para el botón de eliminar -->
+            </tr>
+        </thead>
+        <tbody id="tabla-body">
+            <!-- Las filas de la tabla se añadirán dinámicamente aquí -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right;">Total:</td>
+                <td id="total">0.00</td>
+                <td></td>
+                <!-- Celda vacía para mantener la alineación -->
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        // Tu código JavaScript aquí
+        var productosAgregados = [];
+
+        function imprimir() {
+            var confirmacion = confirm("¿Estás seguro de que desea imprimir el comprobante?");
+
+            if (confirmacion) {
+                alert("Imprimiendo...");
+                alert("Comprobante impreso y guardado");
+
+                // Limpiar los campos del formulario
+                document.getElementById("nombre").value = '';
+                document.getElementById("identificacion").value = '';
+                document.getElementById("producto").value = '';
+                document.getElementById("cantidad").value = '';
+
+                // Limpiar la tabla
+                var tablaBody = document.getElementById("tabla-body");
+                while (tablaBody.firstChild) {
+                    tablaBody.removeChild(tablaBody.firstChild);
+                }
+
+                // Reiniciar el total
+                document.getElementById("total").innerHTML = '0.00';
+
+                // Limpiar la lista de productos agregados
+                productosAgregados = [];
+
+                // Actualizar la lista desplegable
+                actualizarListaDesplegable();
+            }
+        }
+
+
+        function salir() {
+            // Preguntar al usuario si realmente desea salir
+            var confirmacion = confirm("¿Estás seguro de que deseas salir?");
+
+            if (confirmacion) {
+                // Redireccionar a index.html
+                window.location.href = "/view/admin.html";
+            }
+        }
+
+        function agregarProducto() {
+            var nombre = document.getElementById("nombre").value.trim();
+            var identificacion = document.getElementById("identificacion").value.trim();
+            var productoInput = document.getElementById("producto");
+            var producto = productoInput.value.trim();
+            var cantidad = parseInt(document.getElementById("cantidad").value);
+
+            if (nombre === "" || identificacion === "" || producto === "" || cantidad <= 0) {
+                alert("Por favor, complete todos los campos y asegúrese de que la cantidad sea mayor que cero.");
+                return;
+            }
+
+            // Verificar si el producto ya fue agregado
+            if (productosAgregados.includes(producto)) {
+                alert("Este producto ya ha sido agregado.");
+                return;
+            }
+
+            var precio = obtenerPrecio(producto);
+            var total = precio * cantidad;
+
+            var tablaBody = document.getElementById("tabla-body");
+            var newRow = tablaBody.insertRow();
+
+            var cellItem = newRow.insertCell(0);
+            var cellDescripcion = newRow.insertCell(1);
+            var cellPrecio = newRow.insertCell(2);
+            var cellCantidad = newRow.insertCell(3);
+            var cellTotal = newRow.insertCell(4);
+            var cellAcciones = newRow.insertCell(5);
+
+            cellItem.innerHTML = tablaBody.rows.length;
+            cellDescripcion.innerHTML = producto;
+            cellPrecio.innerHTML = precio.toFixed(2);
+            cellCantidad.innerHTML = '<input type="number" value="' + cantidad + '" min="1" onchange="actualizarTotal(this)">';
+            cellTotal.innerHTML = total.toFixed(2);
+
+            var btnEliminar = document.createElement("button");
+            btnEliminar.innerHTML = "Eliminar";
+            btnEliminar.onclick = function () {
+                tablaBody.deleteRow(newRow.rowIndex);
+                productosAgregados.splice(productosAgregados.indexOf(producto), 1);
+                actualizarListaDesplegable();
+                calcularTotal();
+            };
+            cellAcciones.appendChild(btnEliminar);
+
+            productosAgregados.push(producto);
+            actualizarListaDesplegable();
+
+            productoInput.value = '';
+            document.getElementById("cantidad").value = '';
+
+            calcularTotal();
+        }
+
+        function obtenerPrecio(producto) {
+            switch (producto) {
+                case "Porción pizza":
+                    return 1.5;
+                case "Lasagna":
+                    return 4;
+                case "Hamburguesa":
+                    return 3.5;
+                default:
+                    return 0;
+            }
+        }
+
+        function calcularTotal() {
+            var tablaBody = document.getElementById("tabla-body");
+            var total = 0;
+
+            for (var i = 0; i < tablaBody.rows.length; i++) {
+                var precio = parseFloat(tablaBody.rows[i].cells[2].innerHTML);
+                var cantidad = parseInt(tablaBody.rows[i].cells[3].getElementsByTagName("input")[0].value);
+                var subtotal = precio * cantidad;
+                total += subtotal;
+                tablaBody.rows[i].cells[4].innerHTML = subtotal.toFixed(2);
+            }
+
+            document.getElementById("total").innerHTML = total.toFixed(2);
+        }
+
+        function actualizarTotal(inputCantidad) {
+            var fila = inputCantidad.closest("tr");
+            var precio = parseFloat(fila.cells[2].innerHTML);
+            var cantidad = parseInt(inputCantidad.value);
+            var subtotal = precio * cantidad;
+            fila.cells[4].innerHTML = subtotal.toFixed(2);
+
+            calcularTotal();
+        }
+
+        function actualizarListaDesplegable() {
+            var listaDesplegable = document.getElementById("productosList");
+
+            for (var i = 0; i < listaDesplegable.options.length; i++) {
+                var option = listaDesplegable.options[i];
+                option.disabled = productosAgregados.includes(option.value);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

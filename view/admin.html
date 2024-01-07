@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu desplegable</title>
+    <link rel="stylesheet" href="/assets/css/adminView.css">
+</head>
+
+<body>
+    <nav class="menu">
+        <section class="menu__container">
+            <h1 class="menu__logo">Sammuele Pizzeria</h1>
+
+            <ul class="menu__links">
+                <li class="menu__item">
+                    <a href="#" class="menu__link" id="home_link">Inicio</a>
+                </li>
+
+                <li class="menu__item menu__item--show">
+                    <a href="#" class="menu__link"> Usuarios <img src="/assets/icons/admin/arrow.svg" class="menu__arrow"></a>
+
+                    <ul class="menu__nesting">
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Nuevo Usuario</a>
+                        </li>
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Lista de usuarios</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu__item  menu__item--show">
+                    <a href="#" class="menu__link">Clientes <img src="/assets/icons/admin/arrow.svg" class="menu__arrow"></a>
+
+                    <ul class="menu__nesting">
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Nuevo Cliente</a>
+                        </li>
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Lista de Clientes</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu__item  menu__item--show">
+                    <a href="#" class="menu__link">Proveedores <img src="/assets/icons/admin/arrow.svg" class="menu__arrow"></a>
+
+                    <ul class="menu__nesting">
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Nuevo Proveedor</a>
+                        </li>
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Lista de Proveedores</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu__item  menu__item--show">
+                    <a href="#" class="menu__link">Productos <img src="/assets/icons/admin/arrow.svg" class="menu__arrow"></a>
+
+                    <ul class="menu__nesting">
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Nuevo Producto</a>
+                        </li>
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Lista de Productos</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu__item  menu__item--show">
+                    <a href="#" class="menu__link">Facturas <img src="/assets/icons/admin/arrow.svg" class="menu__arrow"></a>
+
+                    <ul class="menu__nesting">
+                        <li class="menu__inside">
+                            <a href="/view/admin/bill.html" class="menu__link menu__link--inside" id="newBill_link">Nueva Factura</a>
+                        </li>
+                        <li class="menu__inside">
+                            <a href="#" class="menu__link menu__link--inside">Lista de Facturas</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="menu__item " id="close_link">
+                    <a href="/index.html" class="menu__link">Salir</a>
+                </li>
+
+            </ul>
+
+            <div class="menu__hamburguer">
+                <img src="/assets/icons/admin/menu.svg" class="menu__img">
+            </div>
+        </section>
+    </nav>
+    <div id="content">
+        <p>Contenido se mostrará aquí.</p>
+    </div>
+
+    <script src="/assets/js/adminContent.js"></script>
+    <script src="/assets/js/adminBar.js"></script>
+
+</body>
+
+</html>

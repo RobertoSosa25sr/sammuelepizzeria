@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'TahuKotak';
+    src: url('/assets/font/Tahu\ Kotak.woff2') format('woff2');
+    /* Puedes incluir más formatos de fuente si es necesario */
+    font-weight: normal;
+    font-style: normal;
+}
+
+.home {
+    font-family: "TahuKotak";
+    font-size: 72px;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+}
+
+body{
+    background: url('/assets/img/loginBackground.webp') no-repeat;
+    background-size: cover;
+}
